@@ -5,11 +5,15 @@ import { metrics } from "../utils/metrics";
 
 type SearchBarProps = {
   handleSearch: (searchQuery: string) => void;
+  searchQuery: string;
+  setSearchQuery: (searchQuery: string) => void;
 };
 
-const SearchBar: React.FC<SearchBarProps> = ({ handleSearch }) => {
-  const [searchQuery, setSearchQuery] = useState<string>("");
-
+const SearchBar: React.FC<SearchBarProps> = ({
+  handleSearch,
+  searchQuery,
+  setSearchQuery,
+}) => {
   useEffect(() => {
     !!searchQuery && handleSearch(searchQuery);
   }, [searchQuery]);

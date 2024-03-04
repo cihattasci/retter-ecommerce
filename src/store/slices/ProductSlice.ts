@@ -41,6 +41,7 @@ export const searchProducts = createAsyncThunk(
 const initialState = {
   status: APIStatus.NULL as APIStatus,
   products: [] as ProductAPIResponseInterface[],
+  searchedProducts: [] as ProductAPIResponseInterface[],
   total: 0,
 };
 
@@ -61,16 +62,10 @@ const productSlice = createSlice({
       .addCase(fetchProducts.rejected, (state) => {
         state.status = APIStatus.ERROR;
       })
-      .addCase(searchProducts.pending, (state) => {
-        state.status = APIStatus.LOADING;
-      })
       .addCase(searchProducts.fulfilled, (state, action) => {
         state.status = APIStatus.SUCCESS;
-        state.products = action.payload.products;
+        state.searchedProducts = action.payload.products;
         state.total = action.payload.total;
-      })
-      .addCase(searchProducts.rejected, (state) => {
-        state.status = APIStatus.ERROR;
       });
   },
 });

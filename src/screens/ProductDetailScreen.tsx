@@ -1,4 +1,4 @@
-import { Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { DetailScreenProps } from "../types";
 import { useNavigation } from "@react-navigation/native";
@@ -21,12 +21,25 @@ const ProductDetailScreen: React.FC<DetailScreenProps> = ({
 
   const [isCart, setIsCart] = useState<boolean>(false);
 
-  const { id, title, description, price, images } = product;
+  const {
+    id,
+    title,
+    description,
+    price,
+    images,
+    rating,
+    category,
+    brand,
+    discountPercentage,
+    stock,
+  } = product;
 
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Text onPress={navigateToCart}>Cart {cart.length}</Text>
+        <TouchableOpacity onPress={navigateToCart}>
+          <Text style={styles.cartText}>Cart ({cart.length})</Text>
+        </TouchableOpacity>
       ),
     });
 
@@ -55,11 +68,28 @@ const ProductDetailScreen: React.FC<DetailScreenProps> = ({
     <SafeAreaProvider style={styles.main}>
       <ImageSlider images={images} />
 
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.description}>{description}</Text>
-      <Text style={styles.price}>
-        Price: <Text style={styles.priceBold}>${price}</Text>
-      </Text>
+      <View style={{ flex: 2 }}>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.description}>{description}</Text>
+        <Text style={styles.price}>
+          Price: <Text style={styles.priceBold}>${price}</Text>
+        </Text>
+        <Text style={styles.price}>
+          Discount: <Text style={styles.priceBold}>{discountPercentage}%</Text>
+        </Text>
+        <Text style={styles.price}>
+          Stock: <Text style={styles.priceBold}>{stock}</Text>
+        </Text>
+        <Text style={styles.price}>
+          Brand: <Text style={styles.priceBold}>{brand}</Text>
+        </Text>
+        <Text style={styles.price}>
+          Category: <Text style={styles.priceBold}>{category}</Text>
+        </Text>
+        <Text style={styles.price}>
+          Rating: <Text style={styles.priceBold}>{rating}</Text>
+        </Text>
+      </View>
 
       {isCart ? (
         <TouchableOpacity
@@ -79,8 +109,14 @@ const ProductDetailScreen: React.FC<DetailScreenProps> = ({
 
 const styles = StyleSheet.create({
   main: {
+    flex: 1,
     backgroundColor: colors.white,
     padding: 10,
+    justifyContent: "center",
+  },
+  cartText: {
+    fontSize: 14,
+    color: colors.black,
   },
   removeCartButton: {
     backgroundColor: colors.red,
@@ -119,12 +155,14 @@ const styles = StyleSheet.create({
     marginBottom: 7,
   },
   price: {
-    fontSize: 16,
+    fontSize: 14,
     color: colors.black,
+    fontWeight: "100",
   },
   priceBold: {
     fontSize: 16,
-    color: colors.red,
+    color: colors.black,
+    fontWeight: "bold",
   },
 });
 
