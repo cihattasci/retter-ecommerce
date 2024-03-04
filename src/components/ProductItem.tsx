@@ -1,10 +1,9 @@
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { ProductProps } from "../types";
 import { metrics } from "../utils/metrics";
 import { colors } from "../utils/colors";
-import ImageSlider from "./ImageSlider";
 
 const ProductItem: React.FC<ProductProps> = ({ product }) => {
   const { title, description, price, images } = product;
@@ -18,7 +17,11 @@ const ProductItem: React.FC<ProductProps> = ({ product }) => {
 
   return (
     <View style={styles.productContainer}>
-      <ImageSlider images={images} />
+      <Image
+        style={styles.postImage}
+        resizeMode="contain"
+        source={{ uri: product.images[0] }}
+      />
 
       <TouchableOpacity onPress={navigateToDetail}>
         <Text style={styles.title}>{title}</Text>
@@ -38,6 +41,9 @@ const styles = StyleSheet.create({
     width: metrics.width * 0.9,
     borderRadius: 10,
     backgroundColor: colors.gray,
+  },
+  postImage: {
+    height: metrics.height * 0.2,
   },
   title: {
     fontSize: 20,

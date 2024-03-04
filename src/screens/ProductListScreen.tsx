@@ -20,6 +20,7 @@ const ProductListScreen = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const [page, setPage] = React.useState<number>(1);
+  const [searchQuery, setSearchQuery] = React.useState<string>("");
 
   useEffect(() => {
     fetchProductsByPagination();
@@ -44,17 +45,23 @@ const ProductListScreen = () => {
 
   return (
     <SafeAreaView style={styles.main}>
-      <SearchBar handleSearch={handleSearch} />
+      <SearchBar
+        handleSearch={handleSearch}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+      />
 
       <FlatList
-        data={products.products}
+        data={!!searchQuery ? products.searchedProducts : products.products}
         contentContainerStyle={{ marginVertical: 10 }}
         renderItem={({ item }) => (
           <ProductItem product={item} key={`${item.id}_product`} />
         )}
-        ListFooterComponent={() => (
-          <Pagination total={products.total} page={page} setPage={setPage} />
-        )}
+        ListFooterComponent={() =>
+          !searchQuery && (
+            <Pagination total={products.total} page={page} setPage={setPage} />
+          )
+        }
       />
     </SafeAreaView>
   );

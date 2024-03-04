@@ -5,6 +5,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import CartItem from "../components/CartItem";
 import { RootState, AppDispatch } from "../store/store";
 import { removeFromCart } from "../store/slices/CartSlice";
+import { colors } from "../utils/colors";
 
 const CartScreen = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -14,8 +15,16 @@ const CartScreen = () => {
     dispatch(removeFromCart({ id }));
   };
 
+  if (cart.length === 0) {
+    return (
+      <SafeAreaProvider style={styles.mainEmpty}>
+        <Text style={{ fontSize: 20 }}>Your cart is empty</Text>
+      </SafeAreaProvider>
+    );
+  }
+
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider style={styles.main}>
       <FlatList
         data={cart}
         contentContainerStyle={{ marginVertical: 10 }}
@@ -29,6 +38,19 @@ const CartScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  mainEmpty: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colors.white,
+  },
+  main: {
+    flex: 1,
+    padding: 10,
+    gap: 10,
+    backgroundColor: colors.white,
+  },
+});
 
 export default CartScreen;
